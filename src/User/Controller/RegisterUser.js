@@ -1,0 +1,34 @@
+const { SaveUpdateUser, GetAllUser, GetSingleUser, DeleteUser } = require('../Service/RegisterUserService');
+
+const handleRequest = (handler) => async (req, res) => {
+    try {
+        await handler(req, res);
+    } catch (error) {
+        console.error("Error in handler:", error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = {
+    SaveUpdateUserRouter: handleRequest(async (req, res) => {
+        const results = await SaveUpdateUser(req.body);
+        res.json(results);
+    }),
+
+    GetAllUserRouter: handleRequest(async (req, res) => {
+        const results = await GetAllUser();
+        res.json(results);
+    }),
+
+    GetSingleUserRouter: handleRequest(async (req, res) => {
+        const userId = req.params.id;
+        const userGuid = req.params.userGuid;
+        const results = await GetSingleUser(userId, userGuid);
+        res.json(results);
+    }),
+
+    DeleteUserRouter: handleRequest(async (req, res) => {
+        const results = await DeleteUser(req.body);
+        res.json(results);
+    })
+};
