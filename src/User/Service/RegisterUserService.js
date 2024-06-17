@@ -99,10 +99,11 @@ module.exports = {
         });
     },
 
-    GetSingleUser: (ID, UserGuid) => {
+     GetSingleUser : (SingleUser) => {
         return new Promise((resolve, reject) => {
             try {
-                pool.query('CALL GetSingleUser(?, ?, @output_status, @output_message)', [ID, UserGuid], (error, results) => {
+                // Execute the stored procedure with input parameters
+                pool.query('CALL GetSingleUser(?, ?, @output_status, @output_message)', [SingleUser.UserID, SingleUser.UserGuid], (error, results) => {
                     if (error) {
                         return reject(error);
                     }
@@ -111,8 +112,10 @@ module.exports = {
                         if (err) {
                             return reject(err);
                         }
+                        // Resolve with the user details and status/message
+                        console.log("userss",results)
                         resolve({
-                            user: results[0][0], // Assuming the result is a single user object
+                            user: results[0], // Assuming results[0] contains the user data
                             status: rows[0].status,
                             message: rows[0].message
                         });
@@ -122,7 +125,32 @@ module.exports = {
                 reject(error);
             }
         });
-    },
+     },
+
+    //  GetSingleUser: (SingleUser) => {
+    //     return new Promise((resolve, reject) => {
+    //         try {
+    //             console.log("S",SingleUser);
+    //             var s,m;
+    //             pool.query('CALL GetSingleUser(?, ?, @output_status, @output_message)', [SingleUser.UserID, SingleUser.UserGuid,s,m], (error, results) => {
+    //                 if (error) {
+    //                     return reject(error);
+    //                 }
+    //                 console.log("SingleUser", results);
+    //                 resolve(results[0],
+    //                     {
+    //                         status:200,
+    //                         message :"User Get Sucessfully "
+    //                     }
+    //                 );
+    //             });
+                
+               
+    //         } catch (error) {
+    //             reject(error);
+    //         }
+    //     });
+    // },
 
     DeleteUser: (Delete) => {
         return new Promise((resolve, reject) => {

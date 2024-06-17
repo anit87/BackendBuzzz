@@ -21,9 +21,8 @@ module.exports = {
     }),
 
     GetSingleUserRouter: handleRequest(async (req, res) => {
-        const userId = req.params.id;
-        const userGuid = req.params.userGuid;
-        const results = await GetSingleUser(userId, userGuid);
+        
+        const results = await GetSingleUser(req.body);
         res.json(results);
     }),
 
