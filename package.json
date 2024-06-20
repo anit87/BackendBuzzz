@@ -9,11 +9,24 @@
   "author": "\"BWS\"",
   "license": "ISC",
   "dependencies": {
+    "@ljharb/tsconfig": "^0.2.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mysql2": "^3.10.0",
+    "node-fetch": "^3.3.2",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0"
-  }
+    "swagger-ui-express": "^5.0.0",
+    "twilio": "^5.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bws-somver/BackendBuzzz.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/bws-somver/BackendBuzzz/issues"
+  },
+  "homepage": "https://github.com/bws-somver/BackendBuzzz#readme"
 }

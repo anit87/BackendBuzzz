@@ -16,8 +16,8 @@ module.exports = {
     }),
 
     GetAllProfilePostRouter: handleRequest(async (req, res) => {
-        const UserId = req.param.userId;
-        const results = await GetAllProfilePost(UserId);
+       // const UserId = req.param.userId;
+        const results = await GetAllProfilePost(req.body);
         res.json(results);
     }),
 

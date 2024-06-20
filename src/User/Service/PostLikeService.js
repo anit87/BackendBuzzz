@@ -34,6 +34,7 @@ module.exports = {
                         data.UserId, 
                         data.CreatedBy,
                         data.UpdatedBy,
+                        data.IsLike,
                             s, m
                     ],
                     (error, results) => {
