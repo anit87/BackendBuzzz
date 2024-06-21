@@ -1,4 +1,6 @@
 // services/otpService.js
+const jwt = require('jsonwebtoken');
+const pool = require('../../../DataBase/Connection'); // Adjust path as per your project structure
 
 let otpStorage = {}; // In-memory storage for OTPs
 
@@ -8,7 +10,7 @@ function generateOTP() {
 
 function storeOTP(phoneNumber, otp) {
     otpStorage[phoneNumber] = otp.toString();
-    console.log("OTPstorage",otpStorage);
+    console.log("OTPstorage", otpStorage);
 }
 
 function verifyOTP(phoneNumber, otp) {
@@ -19,60 +21,69 @@ function verifyOTP(phoneNumber, otp) {
     }
     return false;
 }
+function GetSingleUser(Single) {
+    console.log("Single",Single)
+    return new Promise((resolve, reject) => {
+        try {
+            pool.query('CALL GetSingleUser(?, ?, @output_status, @output_message)', [Single.UserId, Single.UserGuid], (error, results) => {
+                if (error) {
+                    return reject(error);
+                }
+                //const user = results[0];
+                console.log("UserList",results[0])
+                const token = generateToken(results[0]);
+                 console.log("token",token)
+                // Fetch output parameters
+                pool.query('SELECT @output_status AS status, @output_message AS message', (err, rows) => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    // Resolve with the user details, token, status, and message
+                    resolve({
+                       // user: results[0],
+                        token: token,
+                        status: rows[0].status,
+                        message: rows[0].message
+                    });
+                });
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+function generateToken(user) {
+    // Define your payload (customize as per your application's needs)
+    const payload = {
+        userId: user.UserId,
+        userGuid: user.UserGuid,
+        // Add more user-related data as needed
+    };
+
+    // Generate and sign the token with a secret key
+    const token = jwt.sign(payload,  process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' }); // Adjust expiration as needed
+
+    return token;
+}
+function verifyToken(token) {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token,  process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(decoded);
+            }
+        });
+    });
+}
+
 
 module.exports = {
     generateOTP,
     storeOTP,
-    verifyOTP
+    verifyOTP,
+    GetSingleUser ,
+    verifyToken
 };
-
-
-
-
-
-// require('dotenv').config();
-
-// let fetch;
-// try {
-//     fetch = require('node-fetch');
-// } catch (error) {
-//     fetch = require('node-fetch').default;
-// }
-
-// const apiKey = process.env.NEXMO_API_KEY;
-// const apiSecret = process.env.NEXMO_API_SECRET;
-// const fromNumber = process.env.NEXMO_PHONE_NUMBER;
-
-// async function generateOTP() {
-//     return Math.floor(100000 + Math.random() * 900000);
-// }
-
-// async function sendOTP(phoneNumber, otp) {
-//     try {
-//         const response = await fetch('https://rest.nexmo.com/sms/json', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/x-www-form-urlencoded',
-//                 'Authorization': `Basic ${Buffer.from(`${apiKey}:${apiSecret}`).toString('base64')}`
-//             },
-//             body: `from=${encodeURIComponent(fromNumber)}&to=${encodeURIComponent(phoneNumber)}&text=${encodeURIComponent(`Your OTP is: ${otp}`)}`
-//         });
-
-//         const responseData = await response.json();
-//         if (responseData.messages[0].status === '0') {
-//             console.log(`OTP sent successfully to ${phoneNumber}`);
-//             return true;
-//         } else {
-//             console.error(`Failed to send OTP to ${phoneNumber}`, responseData.messages[0]['error-text']);
-//             return false;
-//         }
-//     } catch (error) {
-//         console.error('Error sending OTP:', error);
-//         return false;
-//     }
-// }
-
-// module.exports = {
-//     generateOTP,
-//     sendOTP
-// };
