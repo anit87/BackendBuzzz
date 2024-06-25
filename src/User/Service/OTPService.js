@@ -8,6 +8,7 @@ function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000);
 }
 
+
 function storeOTP(phoneNumber, otp) {
     otp=123456;
     otpStorage[phoneNumber] = otp.toString();

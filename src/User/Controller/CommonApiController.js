@@ -6,13 +6,11 @@ const {
     GetStatus, 
     GetAccountType 
 } = require('../Service/CommonApiService');
-
-// Higher-order function to handle errors in router handlers
 const handleRequest = (handler) => async (req, res) => {
     try {
         await handler(req, res);
     } catch (error) {
-        console.error("Error:", error);  // Log the error for debugging purposes
+        console.error("Error:", error);  
         res.status(500).json({ error: error.message });
     }
 };

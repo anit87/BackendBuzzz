@@ -4,15 +4,12 @@ const otpService = require('../Service/OTPService');
 
 async function sendOTP(req, res) {
     const { phoneNumber } = req.body;
-    //singleUser = {UserId:req.UserId,UserGuid:req.UserGuid}
 
     try {
         const otp = otpService.generateOTP();
         otpService.storeOTP(phoneNumber, otp);
         console.log("phoneNumber",phoneNumber)
          console.log("ServiceOTP",otp)
-       
-        // For simplicity, in a real application, you'd send the OTP via SMS or another channel
        // res.status(200).json({ OTP:otp , message: 'OTP sent successfully' });
        res.status(200).json({ Status:200 , message: 'OTP sent successfully' });
     } catch (error) {
@@ -33,7 +30,6 @@ async function verifyOTP(req, res) {
            
             console.log("singleuser",singleUser)
             const userData = await otpService.GetSingleUser(singleUser);
-            // Respond with user data along with verification status
             // res.status(200).json({ status: 200, message: 'OTP verified successfully', user: userData });
             res.status(200).json({ status: 200, message: 'OTP verified successfully' ,Tokan: userData.token});
            
