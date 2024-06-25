@@ -24,6 +24,7 @@ async function verifyOTP(req, res) {
     const { phoneNumber, otp, UserId, UserGuid } = req.body;
 
     try {
+        
         const isVerified = otpService.verifyOTP(phoneNumber, otp);
 
         if (isVerified) {

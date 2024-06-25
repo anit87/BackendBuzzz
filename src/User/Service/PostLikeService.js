@@ -27,7 +27,7 @@ module.exports = {
            
                 var s ,m;
                 pool.query(
-                    'CALL SaveUpdatePostLike(?, ?, ?, ?, ?,  @?, @?)',
+                    'CALL SaveUpdatePostLike(?, ?, ?, ?, ?,?,  @?, @?)',
                     [
                         data.ProfilePostLikeId, 
                         data.ProfilePostId, 
@@ -45,8 +45,8 @@ module.exports = {
                         const message = results.message || results.errorMessage; // check for both message and error message
                         const status = results.status || results.errorstatus;
                         resolve({
-                          status: status,
-                       message:   message
+                          status: status||200,
+                       message:   message||'Like save sucessfully'
                         });
                     }
                 );

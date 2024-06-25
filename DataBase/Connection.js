@@ -19,7 +19,7 @@ const pool = createPool ({
 //             console.log('DataBase Connection Sucessfully')
 //         }
 // })
-module.exports=pool;
+ module.exports=pool;
 
 // const {createPool} = require("mysql");
 

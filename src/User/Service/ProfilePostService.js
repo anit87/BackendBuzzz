@@ -17,6 +17,7 @@ module.exports = {
     SaveUpdateProfilePost: (data) => {
         return new Promise((resolve, reject) => {
             try {
+                console.log(data)
                 const validationError = validateParams(data);
                 if (validationError) {
                     return reject(validationError);
@@ -69,7 +70,8 @@ module.exports = {
         return new Promise((resolve, reject) => {
             try {
                 var s, m;
-                pool.query('CALL GetAllPost(?,?,@s,@m)', [AllList.UserId, AllList.BarId], (error, results, fields) => {
+                console.log("AllList",AllList)
+                pool.query('CALL GetAllPost(?,?,@s,@m)', [AllList.UserId, AllList.BarId,s,m], (error, results, fields) => {
                     if (error) {
                         console.error('Error in calling stored procedure:', error);
                         return reject(error);
@@ -103,7 +105,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             try {
                 var s, m;
-                pool.query('CALL GetSinglePost(?,?,?,@s,@m)', [SingleData.ProfilePostId, SingleData.PostGuid, SingleData.UserId], (error, results, fields) => {
+                pool.query('CALL GetSinglePost(?,?,?,@s,@m)', [SingleData.ProfilePostId, SingleData.PostGuid, SingleData.UserId,s,m], (error, results, fields) => {
                     if (error) {
                         console.error('Error in calling stored procedure:', error);
                         return reject(error);
