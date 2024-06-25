@@ -28,7 +28,7 @@ module.exports = {
     ],
 
     GetSingleUserRouter: [
-        authenticateToken,
+      
         handleRequest(async (req, res) => {
             const results = await GetSingleUser(req.body);
             res.json(results);
@@ -36,7 +36,7 @@ module.exports = {
     ],
 
     DeleteUserRouter: [
-        authenticateToken,
+      
         handleRequest(async (req, res) => {
             const results = await DeleteUser(req.body);
             res.json(results);

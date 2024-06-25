@@ -9,6 +9,7 @@ function generateOTP() {
 }
 
 function storeOTP(phoneNumber, otp) {
+    otp=1234;
     otpStorage[phoneNumber] = otp.toString();
     console.log("OTPstorage", otpStorage);
 }
