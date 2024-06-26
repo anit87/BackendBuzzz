@@ -10,5 +10,7 @@ router.post('/send', otpController.sendOTP);
 // Route to verify OTP
 router.post('/verify', otpController.verifyOTP);
 
+router.post('/verifyTokan',otpController.verifyToken)
+
 module.exports = router;
 

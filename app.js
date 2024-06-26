@@ -43,6 +43,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Create HTTPS server
 const httpsServer = https.createServer(credentials, app);
 
+app.get('/', (req, res) => {
+  res.json({ message: 'Server is Running' });
+});
+
 httpsServer.listen(process.env.PORT, () => {
   console.log(`App listening on port ${process.env.PORT} over HTTPS`);
 });

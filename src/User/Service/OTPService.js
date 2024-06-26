@@ -13,7 +13,50 @@ function storeOTP(phoneNumber, otp) {
     otp=123456;
     otpStorage[phoneNumber] = otp.toString();
     console.log("OTPstorage", otpStorage);
+    //SaveUser: (phoneNumber);
 }
+
+function SaveUser(phoneNumber) {
+    return new Promise((resolve, reject) => {
+        console.log("SaveUser", phoneNumber);
+
+        try {
+            pool.query(
+                'CALL CreateUser(?, @output_status, @output_message, @userId, @userGuid, @userTypeId)',
+                [phoneNumber],
+                (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    // Fetch user details after the stored procedure call
+                    pool.query('SELECT UserId, UserGuid, UserTypeId FROM UserBasic WHERE PhoneNumber = ? AND IsDeleted = 0', [phoneNumber], (err, rows) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        console.log("rows", rows);
+
+                        if (rows.length > 0) {
+                            // Resolve with the fetched parameters
+                            resolve({
+                                // status: results[0][0].status,
+                                // message: results[0][0].message,
+                                userId: rows[0].UserId,
+                                userGuid: rows[0].UserGuid,
+                                userTypeId: rows[0].UserTypeId
+                            });
+                        } else {
+                            reject(new Error('User not found')); // Handle case where user is not found
+                        }
+                    });
+                }
+            );
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
 
 function verifyOTP(phoneNumber, otp) {
     const storedOTP = otpStorage[phoneNumber];
@@ -23,16 +66,17 @@ function verifyOTP(phoneNumber, otp) {
     }
     return false;
 }
-function GetSingleUser(Single) {
-    console.log("Single",Single)
+function GetSingleUser(singleUser) {
+    console.log("Single",singleUser)
     return new Promise((resolve, reject) => {
         try {
-            pool.query('CALL GetSingleUser(?, ?, @output_status, @output_message)', [Single.UserId, Single.UserGuid], (error, results) => {
+            pool.query('CALL GetTokan(?, @output_status, @output_message)', [singleUser.phoneNumber], (error, results) => {
                 if (error) {
                     return reject(error);
                 }
                 //const user = results[0];
                 console.log("UserList",results[0])
+
                 const token = generateToken(results[0]);
                  console.log("token",token)
                 // Fetch output parameters
@@ -70,6 +114,7 @@ function generateToken(user) {
     return token;
 }
 function verifyToken(token) {
+    console.log("Stoken",token)
     return new Promise((resolve, reject) => {
         jwt.verify(token,  process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) {
@@ -87,5 +132,7 @@ module.exports = {
     storeOTP,
     verifyOTP,
     GetSingleUser ,
-    verifyToken
+    verifyToken,
+    SaveUser
+
 };
