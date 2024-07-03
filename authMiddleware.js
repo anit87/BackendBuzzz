@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { getUserByUsername } = require('../BackendBuzzz/src/User/Service/RegisterUserService');
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];

@@ -1,5 +1,4 @@
 const { SaveUpdateUser, GetAllUser, GetSingleUser, DeleteUser } = require('../Service/RegisterUserService');
-const authenticateToken = require('../../../authMiddleware');
 
 const handleRequest = (handler) => async (req, res) => {
     try {
@@ -43,3 +42,4 @@ module.exports = {
         })
     ]
 };
+ 
