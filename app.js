@@ -9,9 +9,9 @@ require('dotenv').config();
 app.use(cors());
 
 // Read SSL certificate files
-const privateKey = fs.readFileSync('./certs/server.key', 'utf8');
-const certificate = fs.readFileSync('./certs/server.cert', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
+// const privateKey = fs.readFileSync('./certs/server.key', 'utf8');
+// const certificate = fs.readFileSync('./certs/server.cert', 'utf8');
+// const credentials = { key: privateKey, cert: certificate };
 
 const userRoutes = require('./src/User/Routes/RegisterUserRoutes');
 const CommonApiRoutes=require('./src/User/Routes/CommonApiRounter');
@@ -36,19 +36,20 @@ app.use('/postshare',PostShare);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// HTTP server
-// app.listen(process.env.PORT||4006, () => {
-//   console.log('DataBase is connected succesfully and Server is running on port 4006');
-// });
 
 
 // Create HTTPS server
-const httpsServer = https.createServer(credentials, app);
+// const httpsServer = https.createServer(credentials, app);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Server is Running' });
 });
 
-httpsServer.listen(process.env.PORT, () => {
-  console.log(`App listening on port ${process.env.PORT} over HTTPS`);
+// HTTP server
+app.listen(process.env.PORT||4006, () => {
+  console.log('DataBase is connected succesfully and Server is running on port 4006');
 });
+
+// httpsServer.listen(process.env.PORT, () => {
+//   console.log(`App listening on port ${process.env.PORT} over HTTPS`);
+// });
