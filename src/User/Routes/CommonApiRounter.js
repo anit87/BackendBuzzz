@@ -10,7 +10,7 @@ const {
 const router = require("express").Router();
 
 // Define routes
-router.get('/', GetUserTypeRouter);
+router.get('/userType', GetUserTypeRouter);
 router.get('/gender', GetGenderRouter);
 router.get('/addressType', GetAddressTypeRouter);
 router.get('/days', GetDaysRouter);  

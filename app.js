@@ -21,6 +21,7 @@ const PostCommentRoutes = require ('./src/User/Routes/PostCommentRouter');
 const BarRouter = require ('./src/User/Routes/BarRouter');
 const CheckInRouter = require('./src/User/Routes/CheckInRouter');
 const otpRoutes = require ('../BackendBuzzz/src/User/Routes/OTPRouter')
+const PostShare =require('../BackendBuzzz/src/User/Routes/PostShareRouter')
 
 app.use(express.json());
 app.use('/users', userRoutes);
@@ -31,6 +32,7 @@ app.use('/PostComment',PostCommentRoutes);
 app.use('/Bar',BarRouter);
 app.use('/CheckIn',CheckInRouter);
 app.use('/otp', otpRoutes);
+app.use('/postshare',PostShare);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

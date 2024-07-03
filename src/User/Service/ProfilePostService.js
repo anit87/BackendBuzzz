@@ -105,6 +105,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             try {
                 var s, m;
+                console.log("SSingleData",SingleData)
                 pool.query('CALL GetSinglePost(?,?,?,@s,@m)', [SingleData.ProfilePostId, SingleData.PostGuid, SingleData.UserId,s,m], (error, results, fields) => {
                     if (error) {
                         console.error('Error in calling stored procedure:', error);

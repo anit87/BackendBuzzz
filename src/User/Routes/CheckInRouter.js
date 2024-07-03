@@ -8,7 +8,7 @@ const {
 } = require('../Controller/CheckInController'); // Adjust the path as needed
 
 router.post('/', SaveUpdateCheckInRouter);
-router.get('/:UserId', GetAllCheckInRouter);
+router.get('/GetAll', GetAllCheckInRouter);
 router.get('/',  GetSingleCheckInRouter); // :id is a URL parameter
 router.delete('/', DeleteCheckInRouter); // :id is a URL parameter
 

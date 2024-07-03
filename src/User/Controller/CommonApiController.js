@@ -17,11 +17,12 @@ const handleRequest = (handler) => async (req, res) => {
 
 module.exports = {
     GetUserTypeRouter: handleRequest(async (req, res) => {
-        GetUserType(null, (err, results) => {
+        GetUserType( (err, results) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
             res.json(results);
+            console.log('c',results)
         });
     }),
 

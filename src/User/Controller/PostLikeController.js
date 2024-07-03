@@ -16,7 +16,8 @@ module.exports = {
     }),
 
     GetAllPostLikeRouter: handleRequest(async (req, res) => {
-        const UserId = req.param.userId;
+        const UserId = req.body;
+        console.log("CPost",UserId)
         const results = await GetAllPostLike(UserId);
         res.json(results);
     }),

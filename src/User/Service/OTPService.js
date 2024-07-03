@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const pool = require('../../../DataBase/Connection'); // Adjust path as per your project structure
 
 let otpStorage = {}; // In-memory storage for OTPs
+let TokenStorage= {};
 
 function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000);
@@ -30,7 +31,7 @@ function SaveUser(phoneNumber) {
                     }
 
                     // Fetch user details after the stored procedure call
-                    pool.query('SELECT UserId, UserGuid, UserTypeId FROM UserBasic WHERE PhoneNumber = ? AND IsDeleted = 0', [phoneNumber], (err, rows) => {
+                    pool.query('SELECT UserId, UserGuid, UserTypeId FROM userbasic WHERE PhoneNumber = ? AND IsDeleted = 0', [phoneNumber], (err, rows) => {
                         if (err) {
                             return reject(err);
                         }
@@ -76,8 +77,9 @@ function GetSingleUser(singleUser) {
                 }
                 //const user = results[0];
                 console.log("UserList",results[0])
-
+            
                 const token = generateToken(results[0]);
+                TokenStorage[token]=token.toString();
                  console.log("token",token)
                 // Fetch output parameters
                 pool.query('SELECT @output_status AS status, @output_message AS message', (err, rows) => {
@@ -109,7 +111,7 @@ function generateToken(user) {
     };
 
     // Generate and sign the token with a secret key
-    const token = jwt.sign(payload,  process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' }); // Adjust expiration as needed
+    const token = jwt.sign(payload,  process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' }); // Adjust expiration as needed
 
     return token;
 }

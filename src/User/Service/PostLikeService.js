@@ -57,12 +57,12 @@ module.exports = {
         });
     },
 
-    GetAllPostLike: (UserId) => {
+    GetAllPostLike: (GetAll) => {
         return new Promise((resolve, reject) => {
             try {
-               // console.log("S",UserId);
+                console.log("S",GetAll);
                 var s, m;
-                pool.query(`call GetAllPostLike( ?, @?,@?)`, [UserId,s, m], (error, results) => {
+                pool.query(`call GetAllPostLike( ?,?, @?,@?)`, [GetAll.UserId,GetAll.ProfilePostId,s, m], (error, results) => {
                     if (error) {
                         return reject(error);
                     }
@@ -70,7 +70,7 @@ module.exports = {
                     resolve(results[0],
                         {
                             status:200,
-                            message :" Post Like Get Sucessfully "
+                            message :"Post Like Get Sucessfully"
                         }
                     );
                 });

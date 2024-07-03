@@ -8,7 +8,7 @@ const {
 } = require('../Controller/PostCommentController'); // Adjust the path as needed
 
 router.post('/', SaveUpdatePostCommentRouter);
-router.get('/:Id', GetAllPostCommentRouter);
+router.get('/GetAllComment', GetAllPostCommentRouter);
 router.get('/',  GetSinglePostCommentRouter); // :id is a URL parameter
 router.delete('/', DeletePostCommentRouter); // :id is a URL parameter
 

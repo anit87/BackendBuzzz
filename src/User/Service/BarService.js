@@ -2,7 +2,7 @@ const pool = require('../../../DataBase/Connection');
 
 const validateParams = (data) => {
     const requiredParams = [
-        'UserId', 'BarName', 'BusinessName', 'ContactNumber', 'BarGUID', 'AddressGuid',
+        'UserId', 'BarName', 'BusinessName', 'ContactNumber', 
         'AddressLine1', 'AddressLine2', 'City', 'State', 'ZipCode', 'Country', 'AddressTypeId',
         'StatusTypeID', 'DayID', 'OpenTime', 'CloseTime', 'CreatedBy', 'UpdatedBy'
     ];
@@ -116,13 +116,15 @@ module.exports = {
             try {
                 console.log("GetSingleBar request data:", SingleData);
 
-                const sql = 'CALL GetSingleBar(?, ?, ?, ?, ?, @status, @message)';
+                const sql = 'CALL GetSingleBar(?, ?, ?, ?, ?,?, @status, @message)';
                 const values = [
                     SingleData.BarId,
                     SingleData.BarGuid,
                     SingleData.UserId,
                     SingleData.UserAddressId,
-                    SingleData.BarworkingDayId
+                    SingleData.BarworkingDayId,
+                    SingleData.AddressTypeId
+                   
                 ];
 
                 pool.query(sql, values, (error, results) => {
@@ -164,6 +166,7 @@ module.exports = {
                     DeleteData.UserAddressId,
                     DeleteData.AddressGuid,
                     DeleteData.BarworkingDayId
+                    
                 ];
 
                 pool.query(sql, values, (error, results) => {

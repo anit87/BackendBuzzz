@@ -8,7 +8,7 @@ const {
 } = require('../Controller/PostLikeController'); // Adjust the path as needed
 
 router.post('/', SaveUpdatePostLikeRouter);
-router.get('/:Id', GetAllPostLikeRouter);
+router.get('/GetAllLike', GetAllPostLikeRouter);
 router.get('/',  GetSinglePostLikeRouter); // :id is a URL parameter
 router.delete('/', DeletePostLikeRouter); // :id is a URL parameter
 

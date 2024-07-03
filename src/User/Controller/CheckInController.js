@@ -17,7 +17,7 @@ module.exports = {
     }),
 
     GetAllCheckInRouter: handleRequest(async (req, res) => {
-        const { UserId } = req.params;
+        const  UserId  = req.body;
         console.log("GetAllCheckIn request for UserId:", UserId);
         const results = await GetAllCheckIn(UserId);
         res.json(results);

@@ -3,7 +3,7 @@ const pool = require('../../../DataBase/Connection');
 // Function to validate parameters
 const validateParams = (data) => {
     const requiredParams = [
-        'UserGuid', 'PhoneNumber', 'UserTypeId', 'IsActive', 'CreatedBy', 'UpdatedBy', 'ProfileGuid',
+        'UserId','UserGuid', 'PhoneNumber', 'UserTypeId', 'IsActive', 'CreatedBy', 'UpdatedBy', 'ProfileGuid',
         'FirstName', 'LastName', 'DOB', 'GenderTypeId',
         'AddressGuid', 'AddressLine1', 'AddressLine2', 'City', 'State', 'ZipCode', 'Country',
         'AddressTypeId'
@@ -76,7 +76,8 @@ module.exports = {
     GetAllUser: () => {
         return new Promise((resolve, reject) => {
             try {
-                pool.query('CALL GetAllUser(@output_status, @output_message)', (error, results) => {
+             pool.query('CALL GetAllUser(@output_status, @output_message)', (error, results) => {
+                //pool.query('SELECT * FROM employees;', (error, results) => {
                     if (error) {
                         return reject(error);
                     }
@@ -86,7 +87,7 @@ module.exports = {
                             return reject(err);
                         }
                         resolve({
-                            users: results[0],
+                            users: results,
                             status: rows[0].status,
                             message: rows[0].message
                         });

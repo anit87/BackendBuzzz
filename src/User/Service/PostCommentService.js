@@ -58,18 +58,19 @@ module.exports = {
         }
     },
 
-    GetAllPostComment: async (UserId) => {
+    GetAllPostComment: async (GetAll) => {
         try {
-            console.log("GetAllPostComment for UserId:", UserId);
+            console.log("GetAllPostComment for UserId:", GetAll);
 
-            const results = await executeQuery('CALL GetAllPostComment(?, @status, @message)', [UserId]);
+            const results = await executeQuery('CALL GetAllPostComment(?,?, @status, @message)', [GetAll.UserId,GetAll.ProfilePostId]);
 
             const [output] = await executeQuery('SELECT @status AS status, @message AS message', []);
 
             return {
+                data: results[0],
                 status: output.status,
-                message: output.message,
-                data: results[0]
+                message: output.message
+              
             };
         } catch (error) {
             console.error("Error in GetAllPostComment:", error);
@@ -90,9 +91,10 @@ module.exports = {
             const [output] = await executeQuery('SELECT @status AS status, @message AS message', []);
 
             return {
+                
+                data: results[0],
                 status: output.status,
-                message: output.message,
-                data: results[0]
+                message: output.message
             };
         } catch (error) {
             console.error("Error in GetSinglePostComment:", error);

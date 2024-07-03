@@ -16,7 +16,8 @@ module.exports = {
     }),
 
     GetAllPostCommentRouter: handleRequest(async (req, res) => {
-        const UserId = req.param.userId;
+        const UserId = req.body;
+        console.log("CUserId",UserId);
         const results = await GetAllPostComment(UserId);
         res.json(results);
     }),

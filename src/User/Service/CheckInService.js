@@ -2,7 +2,7 @@ const pool = require('../../../DataBase/Connection');
 
 // Function to validate parameters
 const validateParams = (data) => {
-    const requiredParams = ['UserId', 'BarId', 'CheckInDetail', 'CheckInGuid', 'CreatedBy', 'UpdatedBy'];
+    const requiredParams = ['UserId', 'BarId', 'CheckInDetail',  'CreatedBy', 'UpdatedBy'];
     for (const param of requiredParams) {
         if (data[param] == null || data[param] == undefined) {
             return { Message: `${param} is null or undefined`, Status: 201 };
@@ -57,10 +57,11 @@ module.exports = {
         });
     },
 
-    GetAllCheckIn: (UserId) => {
+    GetAllCheckIn: (GetAll) => {
         return new Promise((resolve, reject) => {
             try {
-                pool.query('CALL GetAllCheckIn(?, @status, @message)', [UserId], (error, results) => {
+                console.log("SGetAll",GetAll);
+                pool.query('CALL GetAllCheckIn(?,?, @status, @message)', [GetAll.UserId,GetAll.BarId], (error, results) => {
                     if (error) {
                         return reject(error);
                     }
