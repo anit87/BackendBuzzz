@@ -12,9 +12,15 @@ function generateOTP() {
 
 function storeOTP(phoneNumber, otp) {
     otp=123456;
-    otpStorage[phoneNumber] = otp.toString();
+    const timestamp = Date.now();
+    //otpStorage[phoneNumber] = otp.toString();
+    otpStorage[phoneNumber] = { otp: otp.toString(), timestamp: timestamp };
     console.log("OTPstorage", otpStorage);
-    //SaveUser: (phoneNumber);
+
+    setTimeout(() => {
+        resetOTP(phoneNumber);
+    }, 2 * 60 * 1000); // 2 minutes in milliseconds
+    
 }
 
 function SaveUser(phoneNumber) {
@@ -79,7 +85,7 @@ function GetSingleUser(singleUser) {
                 console.log("UserList",results[0])
             
                 const token = generateToken(results[0]);
-                TokenStorage[token]=token.toString();
+                TokenStorage[token] = { ...results[0] };  // Store token in TokenStorag
                  console.log("token",token)
                 // Fetch output parameters
                 pool.query('SELECT @output_status AS status, @output_message AS message', (err, rows) => {
@@ -135,6 +141,7 @@ module.exports = {
     verifyOTP,
     GetSingleUser ,
     verifyToken,
-    SaveUser
+    SaveUser,
+    TokenStorage
 
 };

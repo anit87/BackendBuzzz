@@ -7,6 +7,7 @@ const {
     DeleteBarRouter
 } = require('../Controller/BarController'); // Adjust the path as needed
 
+
 router.post('/', SaveUpdateBarRouter);
 router.get('/:UserId', GetAllBarRouter);
 router.get('/',  GetSingleBarRouter); // :id is a URL parameter

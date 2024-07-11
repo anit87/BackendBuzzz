@@ -1,5 +1,6 @@
 const { SaveUpdateProfilePost, GetAllProfilePost, GetSingleProfilePost, DeleteProfilePost } = require('../Service/ProfilePostService');
 
+
 const handleRequest = (handler) => async (req, res) => {
     try {
         await handler(req, res);

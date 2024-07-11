@@ -22,8 +22,10 @@ const BarRouter = require ('./src/User/Routes/BarRouter');
 const CheckInRouter = require('./src/User/Routes/CheckInRouter');
 const otpRoutes = require ('./src/User/Routes/OTPRouter');
 const PostShare =require('./src/User/Routes/PostShareRouter');
+const authro =require('./authMiddleware');
 
 app.use(express.json());
+app.use('/auth',authro);
 app.use('/users', userRoutes);
 app.use('/CommonApi',CommonApiRoutes);
 app.use('/ProfilePost',ProfilePostRoutes);

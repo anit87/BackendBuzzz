@@ -6,29 +6,30 @@ const {createPool}= require ("mysql2");
 
 require("dotenv").config();
 
-const pool = createPool({
-  user: 'sql12717213',
-  host: 'sql12.freemysqlhosting.net',
-  database :'sql12717213',
-  password : 'pbsFeLtycj',
+const pool = createPool ({
   port:3306,
-  waitForConnections: true,
-  connectionLimit: 10,
-  maxIdle: 10,
-  idleTimeout: 60000,
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0,
+  host:'localhost',
+  user:'root',
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+
 });
-
-// const pool = createPool ({
-//     port:3306,
-//     host:'localhost',
-//     user:'root',
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_DATABASE,
-
+// const pool = createPool({
+//   user: 'sql12717213',
+//   host: 'sql12.freemysqlhosting.net',
+//   database :'sql12717213',
+//   password : 'pbsFeLtycj',
+//   port:3306,
+//   waitForConnections: true,
+//   connectionLimit: 10,
+//   maxIdle: 10,
+//   idleTimeout: 60000,
+//   queueLimit: 0,
+//   enableKeepAlive: true,
+//   keepAliveInitialDelay: 0,
 // });
+
+
 
 // const pool = createPool ({
 //   user: 'sql12717213',

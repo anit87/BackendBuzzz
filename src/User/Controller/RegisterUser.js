@@ -18,13 +18,24 @@ module.exports = {
         })
     ],
 
-    GetAllUserRouter: [
+
+   GetAllUserRouter: [
+        
        // authenticateToken,
         handleRequest(async (req, res) => {
-            const results = await GetAllUser();
+        const results = await GetAllUser();
             res.json(results);
         })
     ],
+
+    // GetAllUserRouter: [
+        
+    //    // authenticateToken,
+    //     handleRequest(async (req, res) => {
+    //         const results = await GetAllUser();
+    //         res.json(results);
+    //     })
+    // ],
 
     GetSingleUserRouter: [
       
