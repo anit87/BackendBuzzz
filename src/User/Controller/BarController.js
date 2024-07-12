@@ -51,20 +51,22 @@ module.exports = {
         }
     }),
 
-    GetAllBarRouter: handleRequest(authenticateToken,async (req, res) => {
+    //GetAllBarRouter: handleRequest(authenticateToken,async (req, res) => {
+        GetAllBarRouter: handleRequest(async (req, res) => {
         const { UserId } = req.params;
         console.log("GetAllBar request for UserId:", UserId);
         const results = await GetAllBar(UserId);
         res.json(results);
     }),
 
-    GetSingleBarRouter: handleRequest(authenticateToken,async (req, res) => {
+  //  GetSingleBarRouter: handleRequest(authenticateToken,async (req, res) => {
+    GetSingleBarRouter: handleRequest(async (req, res) =>{
         console.log("GetSingleBar request body:", req.body);
         const results = await GetSingleBar(req.body);
         res.json(results);
     }),
 
-    DeleteBarRouter: handleRequest(authenticateToken,async (req, res) => {
+    DeleteBarRouter: handleRequest(async (req, res) => {
         console.log("DeleteBar request body:", req.body);
         const results = await DeleteBar(req.body);
         res.json(results);

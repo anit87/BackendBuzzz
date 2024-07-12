@@ -67,7 +67,7 @@ module.exports = {
                         return reject(error);
                     }
                     console.log("Post Like", results);
-                    resolve(results[0],
+                    resolve(results,
                         {
                             status:200,
                             message :"Post Like Get Sucessfully"
@@ -92,7 +92,7 @@ module.exports = {
                     }
                     console.log("SingleProfilePostLike", results);
                     resolve(results[0],
-                        {
+                        {data:results,
                             status:200,
                             message :" Post Like Get Sucessfully "
                         }

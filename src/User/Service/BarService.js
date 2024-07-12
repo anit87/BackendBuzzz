@@ -18,7 +18,6 @@ module.exports = {
     SaveUpdateBar: (data) => {
         return new Promise((resolve, reject) => {
             try {
-        var s,m,o
                 const validationError = validateParams(data);
                 if (validationError) {
                     console.log(validationError);
@@ -50,8 +49,7 @@ module.exports = {
                     data.OpenTime,
                     data.CloseTime,
                     data.CreatedBy,
-                    data.UpdatedBy,
-                    s,m
+                    data.UpdatedBy
                 ];
 
                 pool.query(sql, values, (error, results) => {
@@ -114,9 +112,9 @@ module.exports = {
     GetSingleBar: (SingleData) => {
         return new Promise((resolve, reject) => {
             try {
-                console.log("GetSingleBar request data:", SingleData);
-
-                const sql = 'CALL GetSingleBar(?, ?, ?, ?, ?,?, @status, @message)';
+                // Execute the stored procedure with input parameters
+                console.log("SingleData", SingleData);
+                const sql = 'CALL GetSingleBar(?, ?, ?, ?, ?, ?, @status, @message)';
                 const values = [
                     SingleData.BarId,
                     SingleData.BarGuid,
@@ -124,7 +122,6 @@ module.exports = {
                     SingleData.UserAddressId,
                     SingleData.BarworkingDayId,
                     SingleData.AddressTypeId
-                   
                 ];
 
                 pool.query(sql, values, (error, results) => {
@@ -132,23 +129,22 @@ module.exports = {
                         return reject(error);
                     }
 
-                    const statusQuery = 'SELECT @status AS status, @message AS message';
-                    pool.query(statusQuery, (error, outputResults) => {
-                        if (error) {
-                            return reject(error);
+                    // Fetch output parameters
+                    pool.query('SELECT @status AS status, @message AS message', (err, rows) => {
+                        if (err) {
+                            return reject(err);
                         }
 
-                        const output = outputResults[0];
+                        console.log("results", results);
                         resolve({
-                            status: output.status,
-                            message: output.message,
-                            data: results[0]
+                            barDetails: results[0], // Assuming results[0] contains the bar data
+                            status: rows[0].status,
+                            message: rows[0].message
                         });
                     });
                 });
-            } catch (e) {
-                console.error("Error in GetSingleBar:", e);
-                reject(e);
+            } catch (error) {
+                reject(error);
             }
         });
     },
@@ -166,7 +162,6 @@ module.exports = {
                     DeleteData.UserAddressId,
                     DeleteData.AddressGuid,
                     DeleteData.BarworkingDayId
-                    
                 ];
 
                 pool.query(sql, values, (error, results) => {

@@ -24,7 +24,7 @@ module.exports = {
                 if (validationError) {
                     return reject(validationError);
                 }
-
+console.log("SData",data)
                 pool.query(
                     'CALL SaveUpdateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, @output_status, @output_message)',
                     [

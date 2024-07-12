@@ -71,7 +71,7 @@ module.exports = {
             try {
                 var s, m;
                 console.log("AllList",AllList)
-                pool.query('CALL GetAllPost(?,?,@s,@m)', [AllList.UserId, AllList.BarId,s,m], (error, results, fields) => {
+                pool.query('CALL GetAllPost2(?,?,@s,@m)', [AllList.UserId, AllList.BarId,s,m], (error, results, fields) => {
                     if (error) {
                         console.error('Error in calling stored procedure:', error);
                         return reject(error);
@@ -84,7 +84,7 @@ module.exports = {
                             return reject(err);
                         }
     
-                        const { status, message } = result[0];
+                        const { status, message } = results;
                         console.log('ProfilePost results:', results);
                         resolve({
                             data: results[0], // Assuming your stored procedure returns data in results[0]
@@ -106,7 +106,7 @@ module.exports = {
             try {
                 var s, m;
                 console.log("SSingleData",SingleData)
-                pool.query('CALL GetSinglePost(?,?,?,@s,@m)', [SingleData.ProfilePostId, SingleData.PostGuid, SingleData.UserId,s,m], (error, results, fields) => {
+                pool.query('CALL GetSinglePost(?,?,?,?,@s,@m)', [SingleData.ProfilePostId, SingleData.PostGuid, SingleData.UserId,SingleData.BarId, s,m], (error, results, fields) => {
                     if (error) {
                         console.error('Error in calling stored procedure:', error);
                         return reject(error);
