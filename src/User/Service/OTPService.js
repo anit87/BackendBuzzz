@@ -10,18 +10,37 @@ function generateOTP() {
 }
 
 
-function storeOTP(phoneNumber, otp) {
-    otp=123456;
-    const timestamp = Date.now();
-    //otpStorage[phoneNumber] = otp.toString();
-    otpStorage[phoneNumber] = { otp: otp.toString(), timestamp: timestamp };
-    console.log("OTPstorage", otpStorage);
+function resetOTP(phoneNumber) {
+    delete otpStorage[phoneNumber];
+    console.log(`OTP for ${phoneNumber} has been reset.`);
+}
 
+// Function to store OTP for a given phone number
+function storeOTP(phoneNumber, otp) {
+    // Store the OTP and the current timestamp
+    const timestamp = Date.now();
+    otpStorage[phoneNumber] = { otp: otp.toString(), timestamp: timestamp };
+    console.log("OTP storage:", otpStorage);
+
+    // Set a timeout to reset the OTP after 2 minutes (120000 milliseconds)
     setTimeout(() => {
         resetOTP(phoneNumber);
-    }, 2 * 60 * 1000); // 2 minutes in milliseconds
-    
+    }, 2 * 60 * 1000);
 }
+
+
+// function storeOTP(phoneNumber, otp) {
+//     otp=123456;
+//     const timestamp = Date.now();
+//     //otpStorage[phoneNumber] = otp.toString();
+//     otpStorage[phoneNumber] = { otp: otp.toString(), timestamp: timestamp };
+//     console.log("OTPstorage", otpStorage);
+
+//     setTimeout(() => {
+//         resetOTP(phoneNumber);
+//     }, 2 * 60 * 1000); // 2 minutes in milliseconds
+    
+// }
 
 function SaveUser(phoneNumber) {
     return new Promise((resolve, reject) => {

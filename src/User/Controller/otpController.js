@@ -4,7 +4,7 @@ const otpService = require('../Service/OTPService');
 
 async function sendOTP(req, res) {
     const { phoneNumber } = req.body;
-
+console.log("CphoneNumber",phoneNumber)
     try {
         const otp = await otpService.generateOTP(); // Generate OTP asynchronously
         await otpService.storeOTP(phoneNumber, otp); // Store OTP for the phoneNumber asynchronously
