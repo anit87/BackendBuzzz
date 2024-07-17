@@ -4,13 +4,14 @@ const {
     SaveUpdateBarRouter,
     GetAllBarRouter,
     GetSingleBarRouter,
-    DeleteBarRouter
+    DeleteBarRouter,
+    handleFileUpload
 } = require('../Controller/BarController'); // Adjust the path as needed
-
 
 router.post('/', SaveUpdateBarRouter);
 router.get('/:UserId', GetAllBarRouter);
-router.get('/',  GetSingleBarRouter); // :id is a URL parameter
-router.delete('/', DeleteBarRouter); // :id is a URL parameter
+router.get('/', GetSingleBarRouter); // :id is a URL parameter
+router.delete('/', DeleteBarRouter);
+router.post('/uploadfile', handleFileUpload);
 
 module.exports = router;

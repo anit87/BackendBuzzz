@@ -22,6 +22,7 @@ const BarRouter = require ('./src/User/Routes/BarRouter');
 const CheckInRouter = require('./src/User/Routes/CheckInRouter');
 const otpRoutes = require ('./src/User/Routes/OTPRouter');
 const PostShare =require('./src/User/Routes/PostShareRouter');
+const fileUpload = require('express-fileupload');
 const authro =require('./authMiddleware');
 
 app.use(express.json());
@@ -37,7 +38,7 @@ app.use('/otp', otpRoutes);
 app.use('/postshare',PostShare);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(fileUpload());
 
 
 // Create HTTPS server
