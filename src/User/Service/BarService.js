@@ -4,7 +4,7 @@ const validateParams = (data) => {
     const requiredParams = [
         'UserId', 'BarName', 'BusinessName', 'ContactNumber', 
         'AddressLine1', 'AddressLine2', 'City', 'State', 'ZipCode', 'Country', 'AddressTypeId',
-        'StatusTypeID', 'DayID', 'OpenTime', 'CloseTime', 'CreatedBy', 'UpdatedBy'
+        'StatusTypeID', 'DayID', 'OpenTime', 'CloseTime'
     ];
     for (const param of requiredParams) {
         if (data[param] == null || data[param] == undefined) {
@@ -15,25 +15,50 @@ const validateParams = (data) => {
 };
 
 module.exports = {
-    SaveUpdateBar: (data) => {
+    SaveUpdateBar: (postData) => {
+        console.log("Servicedata1:", postData);
+
+
         return new Promise((resolve, reject) => {
             try {
-                const validationError = validateParams(data);
-                if (validationError) {
-                    console.log(validationError);
-                    return reject(validationError);
+                const data = postData.data;
+                if (!data) {
+                    throw new Error('Data is undefined');
                 }
-
-                console.log("Save/Update Bar request data:", data);
-
-                const sql = 'CALL SaveUpdateBar(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @status, @message,@output)';
-                const values = [
+                if (data.BarId == 0) {
+                    data.BarID = 0;
+                    data.BarGuid = '';
+                    data.UserAddressId = 0;
+                    data.AddressGuid = '';
+                    reject({
+                        status: -100,
+                        message: "Parameters are invalid"
+                    });
+                    return;
+                }
+                    else
+                    {
+                       data.BarID!=0,data.BarGuid!='',data.UserAddressId!=0,data.AddressGuid!=''
+                       reject({
+                        status: -100,
+                        message: "some parametrs are invalid"
+                    });
+                    }
+              
+    
+                console.log("Data received:", data);
+    
+                // Save user-related data
+                const saveUserQuery = `
+                    CALL SaveUpdateBar2(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @status, @message, @output, @Barid);
+                `;
+                const userValues = [
                     data.BarID,
                     data.UserId,
                     data.ContactNumber,
                     data.BarName,
                     data.BusinessName,
-                    data.BarGUID,
+                    data.BarGuid,
                     data.UserAddressId,
                     data.AddressTypeId,
                     data.AddressGuid,
@@ -43,39 +68,91 @@ module.exports = {
                     data.State,
                     data.ZipCode,
                     data.Country,
-                    data.StatusTypeID,
-                    data.BarworkingDayId,
-                    data.DayID,
-                    data.OpenTime,
-                    data.CloseTime,
-                    data.CreatedBy,
-                    data.UpdatedBy
+                    data.StatusTypeID
                 ];
-
-                pool.query(sql, values, (error, results) => {
-                    if (error) {
-                        return reject(error);
+    
+                pool.query(saveUserQuery, userValues, (err, results) => {
+                    if (err) {
+                        reject(err);
+                        return;
                     }
-
-                    const statusQuery = 'SELECT @status AS status, @message AS message, @output AS output';
-                    pool.query(statusQuery, (error, outputResults) => {
-                        if (error) {
-                            return reject(error);
+    
+                    const output = results;
+                    resolve({
+                        status: output.status,
+                        message: output.message,
+                        data: results,
+                        barId2: output.BarId
+                    });
+    
+                    // Retrieve the last inserted BarId
+                    const getLastInsertIdQuery = `
+                        SELECT LAST_INSERT_ID() as BarId FROM BarDetail WHERE UserId = ? AND IsDeleted = 0;
+                    `;
+                    pool.query(getLastInsertIdQuery, [data.UserId], (err, results) => {
+                        if (err) {
+                            reject(err);
+                            return;
                         }
-
-                        const output = outputResults[0];
-                        resolve({
-                            status: output.status,
-                            message: output.message,
-                            data: results[0]
+    
+                        const barId2 = results[0]?.BarId;
+                        if (!barId2) {
+                            throw new Error('BarId not found');
+                        }
+    
+                        // Check if dayData is defined
+                        const dayDataArray = data.dayData;
+                        if (!Array.isArray(dayDataArray)) {
+                            throw new Error('dayData is not an array');
+                        }
+                        if(dayDataArray.BarworkingDayId==0)
+                        {
+                          dayData.BarkingDayId=0
+                          reject({
+                            status: -101,
+                            message: "BarworkingDayId are invalid"
                         });
+                        }
+    
+                        // Save working days data
+                        const saveUserQuery2 = `
+                            CALL SaveUpdateDay(?, ?, ?, ?, ?, ?, @status, @message);
+                        `;
+    
+                        let completedQueries = 0;
+    
+                        for (let i = 0; i < dayDataArray.length; i++) {
+                            const dayData = dayDataArray[i];
+                            const workingDayValues = [
+                                data.UserId,
+                                barId2,
+                                dayData.BarkingDayId,
+                                dayData.DayID,
+                                dayData.OpenTime,
+                                dayData.CloseTime
+                            ];
+    
+                            pool.query(saveUserQuery2, workingDayValues, (err, results) => {
+                                if (err) {
+                                    reject(err);
+                                    return;
+                                }
+    
+                                completedQueries++;
+                                if (completedQueries === dayDataArray.length) {
+                                    resolve({ success: true, message: 'Bar saved successfully' });
+                                }
+                            });
+                        }
                     });
                 });
             } catch (error) {
+                console.error('Error saving bar:', error);
                 reject(error);
             }
         });
     },
+    
 
     GetAllBar: (UserId) => {
         return new Promise((resolve, reject) => {
