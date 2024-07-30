@@ -30,19 +30,13 @@ module.exports = {
                     data.BarGuid = '';
                     data.UserAddressId = 0;
                     data.AddressGuid = '';
-                    reject({
-                        status: -100,
-                        message: "Parameters are invalid"
-                    });
-                    return;
+                
+                  
                 }
                     else
                     {
                        data.BarID!=0,data.BarGuid!='',data.UserAddressId!=0,data.AddressGuid!=''
-                       reject({
-                        status: -100,
-                        message: "some parametrs are invalid"
-                    });
+                  
                     }
               
     
